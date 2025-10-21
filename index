@@ -1,0 +1,14 @@
+// --- JAVASCRIPT CHO MENU HAMBURGER (Thêm vào cuối thẻ script) ---
+
+document.addEventListener('DOMContentLoaded', () => {
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const mainNav = document.getElementById('main-nav');
+
+  if (hamburgerBtn && mainNav) {
+    hamburgerBtn.addEventListener('click', () => {
+      // Thêm/xóa class 'open' để hiện/ẩn menu và thay đổi icon
+      hamburgerBtn.classList.toggle('open');
+      mainNav.classList.toggle('open');
+    });
+  }
+});
