@@ -245,6 +245,53 @@
       text-align: center;
   }
 }
+  if(t.id==='checkout'){
+        // mock checkout
+        if(Object.keys(state.cart).length===0) {
+          alert('Giỏ hàng trống');
+          return;
+        }
+
+        const total = Object.values(state.cart).reduce((s,it)=>s+it.price*it.qty,0);
+        const ok = confirm('Tổng thanh toán: ' + formatVND(total) + '\nTiến hành mô phỏng thanh toán?');
+        
+        if(ok){
+          // Thay vì alert, gọi hàm hiển thị thông báo mới
+          showPaymentSuccessToast(); 
+          clearCart(); 
+        }
+      }
+          // --- HÀM MỚI ĐỂ HIỂN THỊ THÔNG BÁO THANH TOÁN ---
+    function showPaymentSuccessToast() {
+      // 1. Tạo element cho thông báo
+      const toast = document.createElement('div');
+      toast.className = 'toast-notification';
+      toast.innerHTML = `
+        <div class="toast-icon">✔</div>
+        <div>
+          <div style="font-weight: 700;">Thanh toán thành công!</div>
+          <div>Cảm ơn bạn đã mua hàng tại HT Mobile.</div>
+        </div>
+      `;
+
+      // 2. Thêm vào trang web
+      document.body.appendChild(toast);
+
+      // 3. Thêm class 'show' để kích hoạt animation
+      // Dùng setTimeout nhỏ để trình duyệt kịp render trước khi thêm class
+      setTimeout(() => {
+        toast.classList.add('show');
+      }, 10);
+
+      // 4. Tự động xóa thông báo sau 4 giây
+      setTimeout(() => {
+        toast.classList.remove('show');
+        // Chờ animation chạy xong rồi mới xóa hẳn element
+        setTimeout(() => {
+          toast.remove();
+        }, 500); // 500ms khớp với transition trong CSS
+      }, 4000);
+    }
 </style>
 
 </head>
@@ -726,4 +773,5 @@ document.addEventListener('DOMContentLoaded', () => {
   </script>
 </body>
 </html>
+
 
