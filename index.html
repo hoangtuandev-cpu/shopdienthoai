@@ -7,6 +7,131 @@
   <meta name="description" content="Cửa hàng điện thoại Hoàng Tuấn. Danh sách sản phẩm, giỏ hàng, tìm kiếm, lọc và thanh toán." />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
+  /* ========== FIX HEADER & FOOTER CHO MOBILE ========== */
+
+/* HEADER */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 10px 20px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+header .logo {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #333;
+}
+
+nav ul {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+nav ul li a:hover {
+  color: #007bff;
+}
+
+/* MOBILE HEADER */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  nav ul {
+    flex-direction: column;
+    width: 100%;
+    background: #f8f8f8;
+    border-radius: 8px;
+    margin-top: 10px;
+    padding: 10px;
+  }
+
+  nav ul li {
+    width: 100%;
+    text-align: left;
+    padding: 5px 0;
+  }
+
+  nav ul li a {
+    display: block;
+    width: 100%;
+    padding: 6px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  nav ul li:last-child a {
+    border: none;
+  }
+}
+
+/* FOOTER */
+footer {
+  background: #222;
+  color: #fff;
+  padding: 30px 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+footer .footer-section {
+  flex: 1 1 200px;
+  margin: 10px;
+}
+
+footer h3 {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  color: #ffcc00;
+}
+
+footer p,
+footer a {
+  font-size: 0.9rem;
+  color: #ccc;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: #fff;
+}
+
+/* MOBILE FOOTER */
+@media (max-width: 768px) {
+  footer {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  footer .footer-section {
+    margin: 15px 0;
+  }
+
+  footer h3 {
+    font-size: 1rem;
+  }
+
+  footer p,
+  footer a {
+    font-size: 0.85rem;
+  }
+}
+
   /* 📱 Tối ưu thêm cho mobile */
 @media (max-width: 768px) {
   .container {
@@ -611,3 +736,4 @@
   </script>
 </body>
 </html>
+
