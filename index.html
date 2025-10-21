@@ -194,6 +194,129 @@
       .btn { padding: 8px 12px; font-size: 0.9rem; }
       .product h3 { font-size: 0.9rem; }
     }
+    /* -------------------------------------- */
+/* 📱 Tinh chỉnh cho Mobile (Tối đa 980px) */
+/* -------------------------------------- */
+@media (max-width: 980px){
+  .hero{grid-template-columns:1fr; padding:12px 0;} /* Căn giữa nội dung Hero khi ở cột đơn */
+  .grid{grid-template-columns:1fr}
+  .cart{position:static; margin-top:20px; order:-1;} /* Đưa giỏ hàng lên trên bộ lọc */
+  
+  /* Cải thiện Nav Bar */
+  header .nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px; /* Tăng nhẹ khoảng cách */
+  }
+  nav ul {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 5px; /* Thêm khoảng cách với brand */
+  }
+  nav a {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    text-align: left;
+    transition: background 0.2s; /* Thêm hiệu ứng chuyển đổi */
+  }
+  
+  /* Cải thiện Hero Card */
+  .hero-card{padding:20px;}
+  .hero h1{font-size:1.5rem; line-height:1.4;} /* Kích thước chữ dễ đọc hơn */
+  .searchbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .searchbar input, .btn{
+    width: 100%;
+    min-width: 0; /* Cho phép input co lại */
+  }
+  
+  /* Sản phẩm và Bộ lọc */
+  .filters {
+    order: 2; /* Đặt bộ lọc sau danh sách sản phẩm (người dùng thường cuộn qua sản phẩm trước) */
+    margin-top: 20px;
+  }
+  .product-list {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Giữ kích thước hợp lý */
+    gap: 15px;
+  }
+  .product {
+    padding: 15px;
+  }
+  .price-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px; /* Tăng khoảng cách trong hàng giá */
+  }
+  .price-row .btn{
+    width: 100%; /* Nút hành động chiếm toàn bộ chiều rộng */
+  }
+
+  /* Section Giới thiệu */
+  #about > div {
+    grid-template-columns: 1fr; /* Stack các cột */
+  }
+
+  /* Contact Form */
+  #contact-form {
+    grid-template-columns: 1fr; /* Stack form inputs */
+  }
+}
+
+/* -------------------------------------- */
+/* 📱 Tinh chỉnh cho Màn hình Rất Nhỏ (Tối đa 600px) */
+/* -------------------------------------- */
+@media (max-width: 600px){
+  .container{padding:10px;}
+  
+  /* Typography và Kích thước chung */
+  .hero h1{font-size:1.35rem;}
+  .site-title{font-size:1.1rem;}
+  .muted{font-size:0.9rem;}
+  .btn{padding:10px 12px; font-size:0.9rem;} /* Điều chỉnh kích thước nút */
+  .logo{width:44px; height:44px; font-size:1rem;}
+  
+  /* Product List */
+  .product-list{
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Thu nhỏ thêm cho màn hình hẹp */
+    gap: 10px;
+  }
+  .product .title{font-size: 0.95rem;}
+  .product .desc, .tag{font-size: 0.85rem;}
+  .price{font-size: 1rem;}
+  .old{font-size: 0.8rem;}
+
+  /* Cart Items */
+  .cart-item img{width:40px;height:40px;}
+  .qty button, .qty div{padding:4px 8px;} /* Thu nhỏ nút chỉnh số lượng */
+
+  /* Footer */
+  footer{flex-direction: column; align-items: flex-start; gap: 8px;}
+  footer > div:last-child {
+    text-align: left;
+  }
+}
+
+/* -------------------------------------- */
+/* 📱 Tinh chỉnh cho Màn hình Cực Nhỏ (Tối đa 400px) */
+/* -------------------------------------- */
+@media (max-width: 400px) {
+  .hero h1 {
+    font-size: 1.2rem;
+  }
+  .site-title {
+    font-size: 1rem;
+  }
+  .product-list {
+    grid-template-columns: 1fr 1fr; /* Đảm bảo 2 cột rõ ràng */
+    gap: 8px;
+  }
+  .hero-card, .filters, .cart {
+    padding: 12px;
+  }
+}
   </style>
 </head>
 <body>
@@ -653,4 +776,5 @@
   </script>
 </body>
 </html>
+
 
