@@ -1,6 +1,38 @@
 <!doctype html>
 <html lang="vi">
 <head>
+  <header>
+  <div class="container nav">
+    <div class="brand">
+      <div class="logo">HT</div>
+      <div>
+        <div class="site-title">Hoàng Tuấn Mobile Store</div>
+        <div class="muted">Cửa hàng điện thoại &amp; Phụ kiện</div>
+      </div>
+    </div>
+    
+    <button class="hamburger-btn" id="hamburger-btn" aria-label="Mở menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    
+    <nav id="main-nav">
+      <ul>
+        <li><a href="#">Trang chủ</a></li>
+        <li><a href="#products">Sản phẩm</a></li>
+        <li><a href="#about">Giới thiệu</a></li>
+        <li><a href="#contact">Liên hệ</a></li>
+      </ul>
+    </nav>
+    
+    <div style="display:flex;align-items:center;gap:12px" class="header-actions">
+      <div class="badge muted">Xin chào!</div>
+      <button class="btn" id="open-login" style="background:#eef2f7;color:var(--primary)">Đăng nhập</button>
+      <button class="btn" id="open-cart">Giỏ hàng (<span id="cart-count">0</span>)</button>
+    </div>
+  </div>
+</header>
   // ...
 toast.innerHTML = `
   <i class="fas fa-check-circle" style="font-size: 28px;"></i>
@@ -252,20 +284,19 @@ toast.innerHTML = `
   }
 }
   if(t.id==='checkout'){
-        // mock checkout
-        if(Object.keys(state.cart).length===0) {
-          alert('Giỏ hàng trống');
-          return;
-        }
-
-        const total = Object.values(state.cart).reduce((s,it)=>s+it.price*it.qty,0);
-        const ok = confirm('Tổng thanh toán: ' + formatVND(total) + '\nTiến hành mô phỏng thanh toán?');
-        
-        if(ok){
-          // Thay vì alert, gọi hàm hiển thị thông báo mới
-          showPaymentSuccessToast(); 
-          clearCart(); 
-        }
+      // mock checkout
+      if(Object.keys(state.cart).length===0) {
+        alert('Giỏ hàng trống');
+        return;
+      }
+      const total = Object.values(state.cart).reduce((s,it)=>s+it.price*it.qty,0);
+      const ok = confirm('Tổng thanh toán: ' + formatVND(total) + '\nTiến hành mô phỏng thanh toán?');
+      if(ok){ 
+        // Logic mới: Thông báo thành công và xóa giỏ hàng
+        showPaymentSuccessToast(); 
+        clearCart(); 
+      }
+    }
       }
           // --- HÀM MỚI ĐỂ HIỂN THỊ THÔNG BÁO THANH TOÁN ---
     function showPaymentSuccessToast() {
@@ -776,9 +807,282 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+    <template id="login-modal-tpl">
+  <div class="modal" id="login-modal">
+    <div class="card" style="max-width:400px; padding: 24px;">
+      <h3 style="margin-bottom:16px;">Đăng nhập tài khoản</h3>
+      <form id="login-form">
+        <div style="margin-bottom:12px;">
+          <label style="display:block; margin-bottom: 5px; font-size: 0.9rem;">Tên đăng nhập</label>
+          <input type="text" id="username" placeholder="Nhập tên đăng nhập" required 
+                 style="width:100%; padding:10px; border-radius:8px; border:1px solid #e6eef2;"/>
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="display:block; margin-bottom: 5px; font-size: 0.9rem;">Mật khẩu</label>
+          <input type="password" id="password" placeholder="Nhập mật khẩu" required 
+                 style="width:100%; padding:10px; border-radius:8px; border:1px solid #e6eef2;"/>
+        </div>
+        <div id="login-error" style="color:red; margin-bottom:10px; font-size:0.9rem; display:none;"></div>
+        <div style="display:flex; justify-content:space-between; gap:10px;">
+          <button class="btn" type="submit" style="flex:1;">Đăng nhập</button>
+          <button class="btn" id="login-close" style="background:#e6eef2; color:var(--primary)" type="button">Đóng</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+    /* --- CSS CHO THÔNG BÁO THANH TOÁN THÀNH CÔNG --- */
+.toast-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #28a745; /* Màu xanh lá cây thành công */
+  color: white;
+  padding: 16px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 999;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.toast-notification.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.toast-icon {
+  font-size: 24px;
+}
+
+/* --- CSS CHO MENU HAMBURGER & FOOTER (Tối ưu Mobile) --- */
+/* 1. CSS cho nút Hamburger */
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 25px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 100;
+}
+
+.hamburger-btn span {
+  width: 100%;
+  height: 3px;
+  background-color: var(--primary);
+  border-radius: 3px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Hiệu ứng khi mở menu (biến thành dấu X) */
+.hamburger-btn.open span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.hamburger-btn.open span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger-btn.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+
+/* 2. Media Query để tối ưu Header & Footer cho Mobile */
+@media (max-width: 980px) {
+  /* Hiển thị nút hamburger */
+  .hamburger-btn {
+    display: flex;
+  }
+
+  /* Ẩn menu chính và căn chỉnh lại */
+  nav#main-nav {
+    display: none;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background-color: var(--card);
+    box-shadow: 0 8px 20px rgba(2,6,23,0.1);
+    padding: 10px 0;
+  }
+  
+  /* Khi menu được mở (thêm class 'open' bằng JS) */
+  nav#main-nav.open {
+    display: block;
+  }
+
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  nav ul li {
+    width: 100%;
+    text-align: center;
+    margin: 5px 0;
+  }
+  
+  nav a {
+    display: block;
+    padding: 12px 0;
+  }
+  
+  /* Tối ưu Footer */
+  footer .container > div {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  footer .muted {
+      text-align: center;
+  }
+}
+    // MOCK DATA: Tài khoản đăng nhập
+const USERS = [
+  { username: 'admin', password: '123', role: 'admin', name: 'Quản trị viên' },
+  { username: 'user1', password: '123', role: 'user', name: 'Khách hàng A' },
+  // Thêm tài khoản khác tại đây
+];
+
+// Khởi tạo trạng thái người dùng (User State)
+let userState = {
+  isLoggedIn: false,
+  user: null, // Sẽ chứa thông tin user nếu đăng nhập thành công
+};
+
+
+// --- CÁC HÀM MỚI CHO THANH TOÁN & ĐĂNG NHẬP ---
+
+// Hàm hiển thị Thông báo Thanh toán Thành công
+function showPaymentSuccessToast() {
+  const toast = document.createElement('div');
+  toast.className = 'toast-notification';
+  toast.innerHTML = `
+    <div class="toast-icon">✔</div>
+    <div>
+      <div style="font-weight: 700;">Thanh toán thành công!</div>
+      <div>Cảm ơn bạn đã mua hàng tại HT Mobile.</div>
+    </div>
+  `;
+
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add('show');
+  }, 10);
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => {
+      toast.remove();
+    }, 500);
+  }, 4000);
+}
+
+// Hàm cập nhật Header khi đăng nhập/đăng xuất
+function updateHeaderAfterLogin() {
+  const loginBtn = document.getElementById('open-login');
+  const headerActions = document.querySelector('.header-actions');
+
+  if (!loginBtn || !headerActions) return; 
+
+  // Xóa badge cũ
+  const existingBadge = document.getElementById('user-role-badge');
+  if (existingBadge) existingBadge.remove();
+
+  // Reset và gán lại sự kiện
+  loginBtn.replaceWith(loginBtn.cloneNode(true));
+  const newLoginBtn = document.getElementById('open-login');
+
+  if (userState.isLoggedIn) {
+    // Nếu Đã đăng nhập
+    newLoginBtn.textContent = `Xin chào, ${userState.user.name.split(' ')[0]}`;
+    newLoginBtn.style.backgroundColor = '#0ea5e4';
+    newLoginBtn.style.color = 'white';
+    
+    // Gán sự kiện Đăng xuất
+    newLoginBtn.addEventListener('click', logoutUser);
+    
+    // Thêm badge vai trò (ADMIN/USER)
+    const roleBadge = document.createElement('div');
+    roleBadge.className = 'badge';
+    roleBadge.textContent = userState.user.role === 'admin' ? 'ADMIN' : 'USER';
+    roleBadge.style.background = userState.user.role === 'admin' ? '#ef4444' : '#34d399';
+    roleBadge.style.color = 'white';
+    roleBadge.id = 'user-role-badge';
+    headerActions.insertBefore(roleBadge, newLoginBtn);
+  } else {
+    // Nếu Đã đăng xuất
+    newLoginBtn.textContent = 'Đăng nhập';
+    newLoginBtn.style.backgroundColor = '#eef2f7';
+    newLoginBtn.style.color = 'var(--primary)';
+    
+    // Gán sự kiện Đăng nhập
+    newLoginBtn.addEventListener('click', openLoginModal);
+  }
+}
+
+// Hàm Đăng xuất
+function logoutUser() {
+  userState.isLoggedIn = false;
+  userState.user = null;
+  alert('Bạn đã đăng xuất.');
+  updateHeaderAfterLogin();
+}
+
+// Hàm hiển thị Modal Đăng nhập
+function openLoginModal() {
+  const tpl = document.getElementById('login-modal-tpl');
+  // Tránh mở nhiều modal
+  if (document.getElementById('login-modal')) return; 
+
+  const clone = tpl.content.cloneNode(true);
+  const modal = clone.querySelector('.modal');
+  document.body.appendChild(modal);
+
+  const loginForm = modal.querySelector('#login-form');
+  const closeBtn = modal.querySelector('#login-close');
+  const errorMsg = modal.querySelector('#login-error');
+
+  // Đóng Modal khi click nút Đóng
+  closeBtn.addEventListener('click', () => modal.remove());
+  
+  // Xử lý Form Đăng nhập
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    errorMsg.style.display = 'none';
+
+    const username = modal.querySelector('#username').value.trim();
+    const password = modal.querySelector('#password').value.trim();
+
+    const foundUser = USERS.find(u => u.username === username && u.password === password);
+
+    if (foundUser) {
+      userState.isLoggedIn = true;
+      userState.user = foundUser;
+      
+      alert(`Đăng nhập thành công! Chào mừng ${foundUser.name} (${foundUser.role})`);
+      modal.remove(); 
+      updateHeaderAfterLogin(); 
+    } else {
+      errorMsg.textContent = 'Sai tên đăng nhập hoặc mật khẩu.';
+      errorMsg.style.display = 'block';
+    }
+  });
+}
   </script>
 </body>
 </html>
+
 
 
 
